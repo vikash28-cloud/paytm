@@ -22,13 +22,14 @@ router.get("/balance", authMiddleware, async (req, res) => {
 
 })
 
-router.post("/transfer",authMiddleware, async (req, res) => {
+router.post("/transfer", authMiddleware, async (req, res) => {
 
     const { amount, to } = req.body;
 
     const account = await Account.findOne({
         userId: req.userId
     });
+
 
     if (account.balance < amount) {
         return res.status(400).json({
@@ -46,25 +47,35 @@ router.post("/transfer",authMiddleware, async (req, res) => {
         })
     }
 
-    await Account.updateOne({
-        userId: req.userId
-    }, {
-        $inc: {
-            balance: -amount
-        }
-    })
 
-    await Account.updateOne({
-        userId: to
-    }, {
-        $inc: {
-            balance: amount
-        }
-    })
+    Account.updateOne(
+        { userId: req.userId },
+        { $inc: { balance: -amount } }
+    ).then(() => {
+        return Account.updateOne(
+            { userId: to },
+            { $inc: { balance: amount } }
+        );
+    }).then(() => {
+        res.json({
+            message: "Transfer successful",
+            balance: "Amount left " + (account.balance - amount)  // Subtract the transferred amount from the initial balance
+        });
+    }).catch((error) => {
+        res.status(500).json({
+            message: "Transfer failed",
+            error: error.message
+        });
+    });
 
-    res.json({
-        message: "Transfer successful"
-    })
+
+
+
+
+
+
+
+
 
 
 })
