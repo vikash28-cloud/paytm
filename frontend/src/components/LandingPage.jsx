@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import SignUp from './SignUp'
 
 const LandingPage = () => {
   return (
@@ -15,8 +16,8 @@ const LandingPage = () => {
         <p className="text-lg md:text-xl max-w-[600px] text-center">
           Experience the convenience of secure and instant digital payments with Paytm Wallet.
         </p>
-        <Link
-          href="#"
+        <Link to={"/signup"}
+          href="/signup"
           className="inline-flex h-10 items-center justify-center rounded-md bg-[#00bfa5] px-8 text-sm font-medium text-white shadow transition-colors hover:bg-[#00a28e] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
           prefetch={false}
         >
