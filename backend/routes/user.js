@@ -1,7 +1,7 @@
 // backend/routes/user.js
 const express = require('express');
 const jwt = require('jsonwebtoken')
-const JWT_SECRET = require('../config');
+const{ JWT_SECRET} = require('../config');
 const zod = require("zod")
 const { user, Account } = require('../db');
 const { authMiddleware } = require("../middleware.js")
